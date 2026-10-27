@@ -1,0 +1,9 @@
+build/
+out/
+*.pfm
+!scenes/**/*.pfm
+*.o
+*.a
+.vs/
+.vscode/
+__pycache__/

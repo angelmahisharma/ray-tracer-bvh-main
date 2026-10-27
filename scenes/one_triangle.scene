@@ -1,0 +1,8 @@
+# Smallest possible scene: one triangle, constant sky light.
+image 640 360
+spp 16
+max_bounces 3
+camera eye 0 0 3 target 0 0 0 up 0 1 0 fov 45
+environment constant 0.8 0.8 0.8
+material red diffuse 0.75 0.15 0.15
+mesh one_triangle.obj material red
