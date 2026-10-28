@@ -7,3 +7,11 @@ out/
 .vs/
 .vscode/
 __pycache__/
+# Generated build directories
+build/
+build-debug/
+build-mingw/
+
+# Rendered output images
+*.png
+*.pfm

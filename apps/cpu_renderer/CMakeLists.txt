@@ -1,0 +1,6 @@
+add_executable(cpu_renderer main.cpp)
+target_link_libraries(cpu_renderer PRIVATE rt::common)
+find_package(OpenMP)
+if(OpenMP_CXX_FOUND)
+  target_link_libraries(cpu_renderer PRIVATE OpenMP::OpenMP_CXX)
+endif()
