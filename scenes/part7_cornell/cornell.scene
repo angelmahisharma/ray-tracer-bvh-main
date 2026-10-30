@@ -1,0 +1,26 @@
+
+# Part 7 Cornell box showcase
+image 640 640
+spp 16
+max_bounces 5
+
+camera eye 0 2 2 target 0 2 -2 up 0 1 0 fov 40
+environment constant 0.02 0.02 0.02
+
+material floor_mat diffuse 0.75 0.75 0.75
+material ceiling_mat diffuse 0.75 0.75 0.75
+material back_mat diffuse 0.75 0.75 0.75
+material red_mat diffuse 0.75 0.12 0.12
+material green_mat diffuse 0.12 0.65 0.18
+material glass_mat glass 1.5
+material mirror_mat mirror 0.95 0.95 0.95 fuzz 0
+material light_mat emissive 12 12 12
+
+mesh floor.obj material floor_mat
+mesh ceiling.obj material ceiling_mat
+mesh back_wall.obj material back_mat
+mesh left_wall.obj material red_mat
+mesh right_wall.obj material green_mat
+mesh light.obj material light_mat
+mesh glass_sphere.obj material glass_mat
+mesh mirror_sphere.obj material mirror_mat
