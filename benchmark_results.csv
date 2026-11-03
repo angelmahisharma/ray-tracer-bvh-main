@@ -1,0 +1,24 @@
+renderer_name,scene,spp,bounces,median_ms,min_ms
+CPU Brute,scenes/part7_cornell/cornell.scene,1,5,9855.57,9832.86
+CPU Brute,scenes/part7_cornell/cornell.scene,2,5,17566.20,17131.20
+CPU Brute,scenes/part7_cornell/cornell.scene,4,5,33599.60,33484.50
+CPU Brute,scenes/part7_cornell/cornell.scene,8,5,66773.30,66651.10
+CPU Brute,scenes/part7_cornell/cornell.scene,16,5,133545.00,133381.00
+CUDA Brute,scenes/part7_cornell/cornell.scene,1,5,163.75,162.71
+CUDA Brute,scenes/part7_cornell/cornell.scene,2,5,318.94,310.61
+CUDA Brute,scenes/part7_cornell/cornell.scene,4,5,642.31,618.69
+CUDA Brute,scenes/part7_cornell/cornell.scene,8,5,1352.66,1268.50
+CUDA Brute,scenes/part7_cornell/cornell.scene,16,5,2811.14,2658.12
+CUDA Brute,scenes/part7_cornell/cornell.scene,32,5,5957.41,5837.93
+CUDA BVH,scenes/part7_cornell/cornell.scene,1,5,5.34,4.87
+CUDA BVH,scenes/part7_cornell/cornell.scene,2,5,9.61,9.40
+CUDA BVH,scenes/part7_cornell/cornell.scene,4,5,18.78,18.62
+CUDA BVH,scenes/part7_cornell/cornell.scene,8,5,37.01,36.96
+CUDA BVH,scenes/part7_cornell/cornell.scene,16,5,75.17,74.28
+CUDA BVH,scenes/part7_cornell/cornell.scene,32,5,166.37,159.79
+OptiX,scenes/part7_cornell/cornell.scene,1,5,2.26,2.24
+OptiX,scenes/part7_cornell/cornell.scene,2,5,4.74,4.70
+OptiX,scenes/part7_cornell/cornell.scene,4,5,9.89,9.56
+OptiX,scenes/part7_cornell/cornell.scene,8,5,17.11,16.55
+OptiX,scenes/part7_cornell/cornell.scene,16,5,33.66,32.97
+OptiX,scenes/part7_cornell/cornell.scene,32,5,68.59,67.83

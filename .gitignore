@@ -1,18 +1,36 @@
+# Build directories
 build/
-out/
-*.pfm
-!scenes/**/*.pfm
-*.o
-*.a
+build-debug/
+build-mingw/
+
+# IDE
 .vs/
 .vscode/
+
+# Compiled files
+*.o
+*.a
+
+# Python
+.venv/
 __pycache__/
 # Generated build directories
 build/
 build-debug/
 build-mingw/
 third_party/oidn/
+*.pyc
 
-# Rendered output images
+# Rendered output images & PFMs
 *.png
 *.pfm
+!scenes/**/*.pfm
+
+# Part 8 generated files
+bench_out_*
+noise_check_out/
+temp_scenes/
+
+# Allow the final report charts and CSV to be tracked
+!report_charts/*.png
+!benchmark_results.csv
