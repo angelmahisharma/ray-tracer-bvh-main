@@ -15,3 +15,6 @@ build-mingw/
 # Rendered output images
 *.png
 *.pfm
+
+# Allow the final report charts to be tracked
+!report_charts/*.png
