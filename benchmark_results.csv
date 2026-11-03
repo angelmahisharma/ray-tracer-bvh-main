@@ -3,7 +3,8 @@ CPU Brute,scenes/part7_cornell/cornell.scene,1,5,9855.57,9832.86
 CPU Brute,scenes/part7_cornell/cornell.scene,2,5,17566.20,17131.20
 CPU Brute,scenes/part7_cornell/cornell.scene,4,5,33599.60,33484.50
 CPU Brute,scenes/part7_cornell/cornell.scene,8,5,66773.30,66651.10
-CPU Brute,scenes/part7_cornell/cornell.scene,16,5,133545.00,133381.00
+CPU Brute,scenes/part7_cornell/cornell.scene,16,5,137929.00,133319.00
+CPU BVH,scenes/part7_cornell/cornell.scene,16,5,162392.00,161800.00
 CUDA Brute,scenes/part7_cornell/cornell.scene,1,5,163.75,162.71
 CUDA Brute,scenes/part7_cornell/cornell.scene,2,5,318.94,310.61
 CUDA Brute,scenes/part7_cornell/cornell.scene,4,5,642.31,618.69

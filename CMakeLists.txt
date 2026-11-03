@@ -31,6 +31,9 @@ if(RT_BUILD_TESTS)
   add_executable(test_basic tests/test_basic.cpp)
   target_link_libraries(test_basic PRIVATE rt::common)
   add_test(NAME basic COMMAND test_basic ${CMAKE_CURRENT_SOURCE_DIR}/scenes)
+  add_executable(test_bvh tests/test_bvh.cpp)
+  target_link_libraries(test_bvh PRIVATE rt::common)
+  add_test(NAME bvh COMMAND test_bvh)
 endif()
 
 # ---- renderer apps: each owner just drops a CMakeLists.txt into their folder ----

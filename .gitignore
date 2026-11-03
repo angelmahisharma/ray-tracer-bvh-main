@@ -2,6 +2,7 @@
 build/
 build-debug/
 build-mingw/
+third_party/oidn/
 
 # IDE
 .vs/
@@ -19,6 +20,7 @@ __pycache__/
 # Rendered output images & PFMs
 *.png
 *.pfm
+<<<<<<< HEAD
 !scenes/**/*.pfm
 
 # Part 8 generated files
@@ -29,3 +31,5 @@ temp_scenes/
 # Allow the final report charts and CSV to be tracked
 !report_charts/*.png
 !benchmark_results.csv
+=======
+>>>>>>> origin/part3

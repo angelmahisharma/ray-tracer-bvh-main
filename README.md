@@ -14,6 +14,7 @@ ctest --test-dir build                       # should print: 100% tests passed
 
 ./build/scene_stats scenes/spheres.scene     # triangle count, bounds, lights, memory
 ./build/debug_view  scenes/spheres.scene out.png --downscale 2   # normal-colour preview
+./build/cpu_renderer scenes/spheres.scene output 1 2 sah          # CPU path tracing with SAH BVH
 ```
 Windows (Visual Studio): `cmake -B build` then `cmake --build build --config Release`
 (executables end up in `build/Release/`).
@@ -55,10 +56,13 @@ docs/            SCENE_FORMAT, HOW_TO_PLUG_IN, DATA_LAYOUT, TEAM_RULES
 | `camera.h`      | `Camera`, `make_camera`, `pixel_ray` |
 | `rng.h`         | `Rng` (PCG32) identical on CPU / CUDA / OptiX |
 | `scene.h`       | `Scene`, `load_scene`, stats printer, flat upload buffers |
+| `bvh.h`          | CPU slab tests, median/SAH builders, flattened nodes and traversal |
 | `image.h`       | `Image`, `save_png`, `save_pfm`, `load_pfm` |
 
 All headers except `scene.h`/`image.h` are usable from `.cu` files and OptiX
 device programs (`RT_HD` expands to `__host__ __device__` under nvcc).
+
+Part 3 usage, flattened layout, statistics and timings: [`docs/BVH.md`](docs/BVH.md).
 
 ## Git workflow (agreed in week 1)
 

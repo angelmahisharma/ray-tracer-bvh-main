@@ -7,34 +7,40 @@ from pathlib import Path
 
 OUTPUT_CSV = "benchmark_results.csv"
 
-# The renderers you built
-RENDERERS = [
-    ("build/apps/cpu_renderer/Release/cpu_renderer.exe", "CPU Brute"),
-    ("build/apps/cuda_renderer/Release/cuda_renderer.exe", "CUDA Brute"),
-    ("build/apps/cuda_bvh_renderer/Release/cuda_bvh_renderer.exe", "CUDA BVH"),
-    ("build/apps/optix_renderer/Release/optix_renderer.exe", "OptiX"),
+# Format: (Renderer Path, Scene Path, SPP, Bounces, Friendly Name, Extra Args)
+# Note: CPU Brute, CUDA, and OptiX are commented out because we already have their data.
+# We are only running the new CPU BVH.
+JOBS = [
+    # ("build/apps/cpu_renderer/Release/cpu_renderer.exe", "scenes/part7_cornell/cornell.scene", 16, 5, "CPU Brute", []),
+    ("build/apps/cpu_renderer/Release/cpu_renderer.exe", "scenes/part7_cornell/cornell.scene", 16, 5, "CPU BVH", ["sah"]),
+    # ("build/apps/cuda_renderer/Release/cuda_renderer.exe", "scenes/part7_cornell/cornell.scene", 16, 5, "CUDA Brute", []),
+    # ("build/apps/cuda_bvh_renderer/Release/cuda_bvh_renderer.exe", "scenes/part7_cornell/cornell.scene", 16, 5, "CUDA BVH", []),
+    # ("build/apps/optix_renderer/Release/optix_renderer.exe", "scenes/part7_cornell/cornell.scene", 16, 5, "OptiX", []),
 ]
 
-# The SPP sweep
-SPP_LIST = [1, 2, 4, 8, 16, 32]
-
-def run_once(renderer, scene, spp, bounces, run_index, name):
+def run_once(renderer, scene, spp, bounces, run_index, name, extra_args):
+    """Runs the renderer once and extracts the kernel time from stdout."""
     safe_name = name.replace(" ", "_")
     out_prefix = f"bench_{safe_name}_spp{spp}_{run_index}"
     
-    result = subprocess.run(
-        [renderer, scene, out_prefix, str(spp), str(bounces)],
-        capture_output=True, text=True
-    )
+    # Combine the base command with any extra arguments (like 'sah')
+    cmd = [renderer, scene, out_prefix, str(spp), str(bounces)] + extra_args
     
+    # Run the executable and capture the output
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    
+    # Look for: "Render time: 12.345 s" in the C++ output
     match = re.search(r"Render time:\s+([\d.]+)\s+s", result.stdout)
     if not match:
         print(f"\nError: Could not find 'Render time' in {name} output!")
+        print("Output was:", result.stdout)
         return None
+        
+    # Convert seconds to milliseconds
     return float(match.group(1)) * 1000.0
 
 def main():
-    print(f"--- Starting SPP Sweep Benchmark ---")
+    print(f"--- Starting Benchmark Suite ---")
     
     file_exists = Path(OUTPUT_CSV).exists()
     csv_file = open(OUTPUT_CSV, mode="a", newline="")
@@ -43,39 +49,40 @@ def main():
     if not file_exists:
         writer.writerow(["renderer_name", "scene", "spp", "bounces", "median_ms", "min_ms"])
 
-    for spp in SPP_LIST:
-        for renderer, name in RENDERERS:
-            # Skip CPU at 32 spp
-            if name == "CPU Brute" and spp == 32:
-                print(f"\nSkipping CPU Brute at {spp} SPP to save time.")
-                continue
+    for renderer, scene, spp, bounces, name, extra_args in JOBS:
+        if not Path(renderer).exists():
+            print(f"Skipping {name}: Renderer not found at {renderer}")
+            continue
 
-            if not Path(renderer).exists():
-                continue
+        print(f"\n--- Benchmarking {name} ---")
+        
+        # 1. Warm-up
+        print(f"  Performing warm-up run...", end="", flush=True)
+        run_once(renderer, scene, spp, bounces, "warmup", name, extra_args)
+        print(" Done.")
 
-            print(f"\n--- Benchmarking {name} at {spp} SPP ---")
-            
-            # Warm-up
-            print(f"  Warm-up...", end="", flush=True)
-            run_once(renderer, "scenes/part7_cornell/cornell.scene", spp, 5, "warmup", name)
-            print(" Done.")
+        # 2. Timed runs
+        times = []
+        for i in range(5):
+            print(f"  Run {i+1}/5...", end="", flush=True)
+            ms = run_once(renderer, scene, spp, bounces, i, name, extra_args)
+            if ms is not None:
+                print(f" {ms:.2f} ms")
+                times.append(ms)
 
-            times = []
-            for i in range(5):
-                print(f"  Run {i+1}/5...", end="", flush=True)
-                ms = run_once(renderer, "scenes/part7_cornell/cornell.scene", spp, 5, i, name)
-                if ms is not None:
-                    print(f" {ms:.2f} ms")
-                    times.append(ms)
+        if not times:
+            continue
 
-            if not times: continue
-            times.sort()
-            median = times[len(times) // 2]
-            min_time = min(times)
-            
-            print(f"  Result: Median = {median:.2f} ms")
-            writer.writerow([name, "scenes/part7_cornell/cornell.scene", spp, 5, f"{median:.2f}", f"{min_time:.2f}"])
-            csv_file.flush()
+        # 3. Calculate stats
+        times.sort()
+        median = times[len(times) // 2]
+        min_time = min(times)
+        
+        print(f"  Result: Median = {median:.2f} ms | Min = {min_time:.2f} ms")
+
+        # 4. Save to CSV
+        writer.writerow([name, scene, spp, bounces, f"{median:.2f}", f"{min_time:.2f}"])
+        csv_file.flush()
 
     csv_file.close()
     print(f"\n✅ Saved results to {OUTPUT_CSV}")
