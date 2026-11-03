@@ -34,7 +34,7 @@ if(RT_BUILD_TESTS)
 endif()
 
 # ---- renderer apps: each owner just drops a CMakeLists.txt into their folder ----
-foreach(app cpu_renderer cuda_renderer optix_renderer benchmark)
+foreach(app cpu_renderer cuda_renderer cuda_bvh_renderer optix_renderer benchmark)
   if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/apps/${app}/CMakeLists.txt)
     add_subdirectory(apps/${app})
   endif()
